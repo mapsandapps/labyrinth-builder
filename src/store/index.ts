@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    nextSegment: null
   },
   mutations: {
+    setNextSegment(state, payload) {
+      state.nextSegment = payload
+    }
   },
   actions: {
   },

@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import store from '../store';
+
 export default {
   name: 'Grid',
   components: {
@@ -63,7 +65,7 @@ export default {
   },
   methods: {
     selectGridItem: function(column, row) {
-      console.log(`${column},${row}`)
+      store.commit('setNextSegment', { x: column, y: row })
     }
   },
   mounted() {

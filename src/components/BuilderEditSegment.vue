@@ -1,14 +1,12 @@
 <template>
 <div>
-  {{ nextSegmentPosition }}
+  TODO: Button to delete segment
 </div>
 </template>
 
 <script>
-import store from '../store';
-
 export default {
-  name: 'BuilderNextSegment',
+  name: 'BuilderEditSegment',
   components: {
   },
   props: {
@@ -18,9 +16,6 @@ export default {
     };
   },
   computed: {
-    nextSegmentPosition () {
-      return store.state.nextSegment
-    }
   },
   methods: {
   },

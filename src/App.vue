@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <BuilderCanvas msg="Welcome to Your Vue.js + TypeScript App"/>
-    <BuilderNextSegment />
+    <BuilderControls />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BuilderCanvas from './components/BuilderCanvas.vue';
-import BuilderNextSegment from './components/BuilderNextSegment.vue';
+import BuilderControls from './components/BuilderControls.vue';
 
 @Component({
   components: {
     BuilderCanvas,
-    BuilderNextSegment
+    BuilderControls
   },
 })
 export default class App extends Vue {}
