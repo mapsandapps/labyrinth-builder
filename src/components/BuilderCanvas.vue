@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    <BuilderCanvas msg="Welcome to Your Vue.js App"/>
+    <Grid />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import BuilderCanvas from '@/components/BuilderCanvas.vue'
+import Grid from '@/components/Grid.vue'
 
 export default {
   name: 'home',
   components: {
-    BuilderCanvas
+    Grid
   }
 }
 </script>
