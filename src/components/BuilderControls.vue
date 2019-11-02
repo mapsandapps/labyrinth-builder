@@ -3,9 +3,7 @@
   <div v-if="!segmentSelected">
     Click a grid on the left to begin.
   </div>
-  <div v-else-if="existingSegmentSelected">
-    <BuilderEditSegment />
-  </div>
+  <BuilderEditSegment />
   <div v-if="segmentSelected">
     <BuilderNextSegment />
   </div>
@@ -30,12 +28,8 @@ export default {
     };
   },
   computed: {
-    existingSegmentSelected () {
-      // TODO: if you click a button and there is already a segment there, select it and display the edit options
-      return false
-    },
     segmentSelected () {
-      return Boolean(store.state.nextSegment)
+      return Boolean(store.state.nextSegmentPosition)
     }
   },
   methods: {

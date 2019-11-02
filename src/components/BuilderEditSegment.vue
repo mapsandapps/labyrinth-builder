@@ -1,10 +1,12 @@
 <template>
 <div>
-  TODO: Button to delete segment
+  {{ segmentsAtSelectedPosition }}
 </div>
 </template>
 
 <script>
+import store from '../store';
+
 export default {
   name: 'BuilderEditSegment',
   components: {
@@ -16,6 +18,10 @@ export default {
     };
   },
   computed: {
+    segmentsAtSelectedPosition () {
+      // TODO: if you click a button and there is already a segment there, select it and display the edit options
+      return store.state.segmentsAtSelectedPosition
+    },
   },
   methods: {
   },

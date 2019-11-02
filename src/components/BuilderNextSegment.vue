@@ -18,8 +18,8 @@ export default {
     };
   },
   computed: {
-    nextSegmentPosition () {
-      return store.state.nextSegment
+    nextSegmentPosition() {
+      return store.state.nextSegmentPosition
     }
   },
   methods: {
