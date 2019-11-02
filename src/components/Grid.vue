@@ -3,36 +3,30 @@
   <svg
     width="500px" height="500px" viewBox="0 0 960 960"
     xmlns="http://www.w3.org/2000/svg" version="1.1">
-
-    <line
+    <circle
+      v-if="!awaitingSelection"
+      :cx="currentPosition.x * tileSize"
+      :cy="currentPosition.y * tileSize"
+      r="8"
+      fill="blue" />
+    <g
       v-for="y in columns - 1"
-      v-bind:key="'y-' + y"
-      x1="0" :y1="tileSize * y" x2="960" :y2="tileSize * y"
-      stroke="black"
-      stroke-dasharray="4" />
-    <line
-      v-for="x in columns - 1"
-      v-bind:key="'x-' + x"
-      :x1="tileSize * x" y1="0" :x2="tileSize * x" y2="960"
-      stroke="black"
-      stroke-dasharray="4" />
-    <line
-      v-for="y in columns"
-      v-bind:key="'y-thin-' + y"
-      x1="0" :y1="tileSize * (y - 0.5)" x2="960" :y2="tileSize * (y - 0.5)"
-      stroke="lightgray"
-      stroke-dasharray="8" />
-    <line
-      v-for="x in columns"
-      v-bind:key="'x-thin-' + x"
-      :x1="tileSize * (x - 0.5)" y1="0" :x2="tileSize * (x - 0.5)" y2="960"
-      stroke="lightgray"
-      stroke-dasharray="8" />
+      v-bind:key="'row-' + y">
+      <circle
+        v-for="x in columns - 1"
+        v-bind:key="'column' + x"
+        :cx="x * tileSize"
+        :cy="y * tileSize"
+        :r="pointRadius"
+        :fill="getPointFill(x, y)"
+        @click="selectPoint(x, y)" />
+    </g>
   </svg>
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import store from '../store';
 
 export default {
@@ -43,15 +37,40 @@ export default {
   },
   data() {
     return {
-      columns: 15
+      columns: 15 // TODO: store in the store
     };
   },
   computed: {
+    awaitingSelection() {
+      return !Boolean(this.currentPosition)
+    },
+    currentPosition() {
+      return store.getters.currentPosition
+    },
+    pointRadius() {
+      return this.awaitingSelection ? 12 : 5
+    },
     tileSize() {
       return store.state.tileSize
     }
   },
   methods: {
+    getPointFill: function(x, y) {
+      if (this.awaitingSelection) {
+        return 'red'
+      }
+      if (x === this.currentPosition.x && y === this.currentPosition.y) {
+        return 'red'
+      }
+      return 'gray'
+    },
+    selectPoint: function(column, row) {
+      let position = {
+        x: column,
+        y: row
+      }
+      store.commit('setCurrentPosition', position)
+    }
   },
   mounted() {
   }

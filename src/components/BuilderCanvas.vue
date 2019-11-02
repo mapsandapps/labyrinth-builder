@@ -1,21 +1,18 @@
 <template>
   <div id="builder-canvas">
-    <Grid />
     <Labyrinth />
-    <!-- <ButtonGrid /> -->
+    <Grid />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import ButtonGrid from '@/components/ButtonGrid.vue'
 import Grid from '@/components/Grid.vue'
 import Labyrinth from '@/components/Labyrinth.vue'
 
 export default {
   name: 'BuilderCanvas',
   components: {
-    // ButtonGrid,
     Grid,
     Labyrinth
   }

@@ -1,8 +1,3 @@
-export type Position = { // TODO: move to types.ts file
-  x: number
-  y: number
-}
-
 export type LabyrinthSegment = {
   x: number
   y: number
@@ -10,9 +5,14 @@ export type LabyrinthSegment = {
   path: string
 }
 
+export type Position = {
+  x: number
+  y: number
+}
+
 export type StoreState = {
+  currentPosition: Position | null
   labyrinthSegments: Array<LabyrinthSegment>
-  nextSegmentPosition: Position | null
   segmentsAtSelectedPosition: Array<LabyrinthSegment>
   tileSize: number
 }

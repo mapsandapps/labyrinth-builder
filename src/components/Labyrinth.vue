@@ -12,10 +12,6 @@
       stroke="green"
       stroke-width="10"
       @click="selectSegment(segment)" />
-    <!-- <path :d="labyrinthPath"
-      fill="none" stroke="blue" stroke-width="14" /> -->
-    <!-- <path :d="labyrinthPath"
-      fill="none" stroke="green" stroke-width="10" /> -->
   </svg>
 </div>
 </template>
@@ -36,10 +32,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      labyrinthSegments: 'getAllSegments',
-      labyrinthPath: 'getLabyrinthPath'
-    }),
-    // labyrinthSegments: store.state.labyrinthSegments
+      labyrinthSegments: 'getAllSegments'
+    })
   },
   methods: {
     selectSegment: function(segment) {
@@ -47,7 +41,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.labyrinthPath)
   }
 };
 </script>

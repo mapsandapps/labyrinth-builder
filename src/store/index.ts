@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { filter } from 'lodash'
-import { Position, StoreState } from './types'
+import { StoreState } from './types'
 
 Vue.use(Vuex)
 
 
 const state: StoreState = {
+  currentPosition: null,
   labyrinthSegments: [
     {
       x: 3,
@@ -39,7 +39,6 @@ const state: StoreState = {
       path: 'a 64,64 0 0,1 64,64'
     }
   ],
-  nextSegmentPosition: null,
   segmentsAtSelectedPosition: [],
   tileSize: 64
 }
@@ -47,9 +46,11 @@ const state: StoreState = {
 export default new Vuex.Store({
   state,
   getters: {
+    currentPosition: state => {
+      return state.currentPosition
+    },
     getAllSegments: state => {
       return state.labyrinthSegments.map(s => {
-
         return {
           x: s.x,
           y: s.y,
@@ -57,31 +58,11 @@ export default new Vuex.Store({
           path: `M ${state.tileSize * (s.x - 1)},${state.tileSize * (s.y - 1)}` + ' ' + s.path + ' '
         }
       })
-    },
-    getLabyrinthPath: state => {
-      let labyrinthPath: string = ''
-
-      state.labyrinthSegments.map(s => {
-        labyrinthPath += `M ${state.tileSize * (s.x - 1)},${state.tileSize * (s.y - 1)}` + ' '
-        labyrinthPath += s.path + ' '
-      })
-
-      return labyrinthPath
-    },
-    getSegmentsAtPosition: state => (position: Position) => {
-      return filter(state.labyrinthSegments, segment => {
-        return segment.x === position.x && segment.y === position.y
-      })
     }
   },
   mutations: {
-    setNextSegmentPosition(state, payload) {
-      state.nextSegmentPosition = payload
-      state.segmentsAtSelectedPosition = filter(state.labyrinthSegments, segment => {
-        console.log(segment)
-        console.log(payload)
-        return segment.x === payload.x && segment.y === payload.y
-      })
+    setCurrentPosition(state, payload) {
+      state.currentPosition = payload
     }
   },
   actions: {

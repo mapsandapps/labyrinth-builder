@@ -1,7 +1,7 @@
 <template>
 <div id="builder-next-segment">
   <div v-if="!segmentSelected">
-    Click a grid on the left to begin.
+    Click a point on the left to begin.
   </div>
   <BuilderEditSegment />
   <div v-if="segmentSelected">
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     segmentSelected () {
-      return Boolean(store.state.nextSegmentPosition)
+      return Boolean(store.getters.currentPosition)
     }
   },
   methods: {
