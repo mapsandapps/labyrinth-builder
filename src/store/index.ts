@@ -65,6 +65,9 @@ export default new Vuex.Store({
       // NOTE: position is actually state.currentPosition, so it could just come from here instead of a param
       state.labyrinthSegments.push({ ...payload.position, path: payload.path })
     },
+    removeLastSegment(state) {
+      state.labyrinthSegments.pop()
+    },
     setCurrentPosition(state, payload) {
       console.log(payload)
       state.currentPosition = payload

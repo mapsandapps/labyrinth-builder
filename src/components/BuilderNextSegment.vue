@@ -133,6 +133,12 @@
         @click="placeSegment">
         Place segment
       </button>
+      <button
+        class="secondary"
+        type="button"
+        @click="undo">
+        Remove last segment
+      </button>
     </form>
   </div>
   <div>
@@ -192,12 +198,12 @@ export default {
           { value: 'down-right', label: '&#x2198;' },
           { value: 'down-left', label: '&#x2199;' }
         ]
-      } else if (this.width === 0) {
+      } else if (this.height > 0) {
         return [
           { value: 'up', label: '&#x2191;' },
           { value: 'down', label: '&#x2193;' },
         ]
-      } else if (this.height === 0) {
+      } else if (this.width > 0) {
         return [
           { value: 'left', label: '&#x2190;' },
           { value: 'right', label: '&#x2192;' },
@@ -211,7 +217,11 @@ export default {
             return true
           }
         }
-      } else if (this.type === 'line' && (this.width > 0 || this.height > 0)) {
+      } else if (this.type === 'line' && (this.width > 0 && this.height > 0)) { // angled line
+        if (this.direction === 'up-left' || this.direction === 'up-right' || this.direction === 'down-left' || this.direction === 'down-right') {
+          return true
+        }
+      } else if (this.type === 'line' && (this.width > 0 || this.height > 0)) { // vertical or horizontal line
         if (this.direction === 'up' || this.direction === 'down' || this.direction === 'left' || this.direction === 'right') {
           return true
         }
@@ -226,14 +236,20 @@ export default {
     placeSegment: function() {
       if (this.type === 'curve') {
         let path = buildCurve(this.direction, this.radius, this.rotation)
-        console.log(path)
         store.commit('createLabyrinthSegment', {
           path,
           position: this.currentPosition
         })
       } else if (this.type === 'line') {
-        buildLine()
+        let path = buildLine(this.direction, this.height, this.width)
+        store.commit('createLabyrinthSegment', {
+          path,
+          position: this.currentPosition
+        })
       }
+    },
+    undo: function() {
+      store.commit('removeLastSegment')
     }
   },
   mounted() {
