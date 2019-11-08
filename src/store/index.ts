@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { StoreState } from './types'
+import { Stage, StoreState } from './types'
 
 Vue.use(Vuex)
 
-
 const state: StoreState = {
+  builderStage: Stage.Starting,
   currentPosition: null,
+  currentSegment: null,
+  currentSegmentIndex: null,
   labyrinthSegments: [
     {
       x: 3,
@@ -46,6 +48,12 @@ const state: StoreState = {
 export default new Vuex.Store({
   state,
   getters: {
+    builderStage: state => {
+      return state.builderStage
+    },
+    currentSegment: state => {
+      return state.currentSegment
+    },
     currentPosition: state => {
       return state.currentPosition
     },
@@ -58,6 +66,9 @@ export default new Vuex.Store({
           path: `M ${state.tileSize * (s.x - 1)},${state.tileSize * (s.y - 1)}` + ' ' + s.path
         }
       })
+    },
+    getCurrentSegment: state => {
+      return state.currentSegment
     }
   },
   mutations: {
@@ -65,12 +76,30 @@ export default new Vuex.Store({
       // NOTE: position is actually state.currentPosition, so it could just come from here instead of a param
       state.labyrinthSegments.push({ ...payload.position, path: payload.path })
     },
+    deleteCurrentSegment(state) {
+      if (typeof state.currentSegmentIndex === 'number') {
+        state.labyrinthSegments.splice(state.currentSegmentIndex, 1)
+        state.currentSegmentIndex = null
+        state.currentSegment = null
+      }
+    },
     removeLastSegment(state) {
       state.labyrinthSegments.pop()
     },
+    setBuilderStage(state, payload) {
+      state.builderStage = payload
+    },
     setCurrentPosition(state, payload) {
-      console.log(payload)
       state.currentPosition = payload
+    },
+    setCurrentSegment(state, payload) {
+      state.currentSegment = payload.segment
+      state.currentSegmentIndex = payload.index
+      state.builderStage = Stage.Editing
+    },
+    unsetCurrentSegment(state) {
+      state.currentSegment = null
+      state.currentSegmentIndex = null
     }
   },
   actions: {

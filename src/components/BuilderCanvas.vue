@@ -1,12 +1,13 @@
 <template>
   <div id="builder-canvas">
     <Labyrinth />
-    <Grid />
+    <Grid v-if="builderStage === 'ADDING'" />
+    {{ builderStage }}
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import store from '../store';
 import Grid from '@/components/Grid.vue'
 import Labyrinth from '@/components/Labyrinth.vue'
 
@@ -15,7 +16,12 @@ export default {
   components: {
     Grid,
     Labyrinth
-  }
+  },
+  computed: {
+    builderStage() {
+      return store.getters.builderStage
+    }
+  },
 }
 </script>
 

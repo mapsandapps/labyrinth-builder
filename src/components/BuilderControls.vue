@@ -1,11 +1,16 @@
 <template>
 <div id="builder-controls">
-  <div v-if="!segmentSelected">
-    Click a point on the left to begin.
+  <div v-if="builderStage === 'ADDING'">
+    Click a point on the left to add a new segment.
   </div>
-  <BuilderEditSegment />
-  <div v-if="segmentSelected">
-    <BuilderNextSegment />
+  <div v-if="builderStage === 'EDITING'">
+    Click a segment on the left to edit it.
+  </div>
+  <BuilderEditSegment v-if="builderStage === 'EDITING'" />
+  <BuilderNextSegment v-if="pointSelected" />
+  <div v-if="builderStage === 'STARTING'">
+    <button @click="setStage('ADDING')">Add segments</button>
+    <button @click="setStage('EDITING')">Edit segments</button>
   </div>
 </div>
 </template>
@@ -28,11 +33,20 @@ export default {
     };
   },
   computed: {
-    segmentSelected () {
+    builderStage() {
+      return store.getters.builderStage
+    },
+    pointSelected() {
       return Boolean(store.getters.currentPosition)
+    },
+    segmentSelected() {
+      return Boolean(store.getters.currentSegment)
     }
   },
   methods: {
+    setStage(stage) {
+      store.commit('setBuilderStage', stage)
+    }
   },
   mounted() {
   }

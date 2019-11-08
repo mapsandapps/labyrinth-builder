@@ -148,7 +148,7 @@
     class="secondary"
     type="button"
     @click="cancel">
-    Cancel segment creation
+    Exit segment creation
   </button>
 </div>
 </template>
@@ -232,6 +232,7 @@ export default {
   methods: {
     cancel: function() {
       store.commit('setCurrentPosition', null)
+      store.commit('setBuilderStage', 'STARTING')
     },
     placeSegment: function() {
       if (this.type === 'curve') {

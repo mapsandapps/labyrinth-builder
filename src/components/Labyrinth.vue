@@ -5,14 +5,22 @@
     width="500px" height="500px" viewBox="0 0 960 960"
     xmlns="http://www.w3.org/2000/svg" version="1.1">
     <path
-      v-for="segment in labyrinthSegments"
+      v-if="currentSegment"
+      :class="currentSegment.path"
+      key="currentSegment"
+      :d="currentSegment.path"
+      fill="none"
+      stroke="red"
+      stroke-width="16" />
+    <path
+      v-for="(segment, index) in labyrinthSegments"
       :class="segment.path"
       :key="segment.path"
       :d="segment.path"
       fill="none"
       stroke="green"
       stroke-width="10"
-      @click="selectSegment(segment)" />
+      @click="selectSegment(segment, index)" />
   </svg>
 </div>
 </template>
@@ -33,12 +41,16 @@ export default {
   },
   computed: {
     ...mapGetters({
+      currentSegment: 'getCurrentSegment',
       labyrinthSegments: 'getAllSegments'
     })
   },
   methods: {
-    selectSegment: function(segment) {
-      console.log(segment)
+    selectSegment: function(segment, index) {
+      store.commit('setCurrentSegment', {
+        segment,
+        index
+      })
     }
   },
   mounted() {

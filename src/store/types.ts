@@ -10,8 +10,17 @@ export type Position = {
   y: number
 }
 
+export enum Stage {
+  Starting = "STARTING",
+  Adding = "ADDING",
+  Editing = "EDITING"
+}
+
 export type StoreState = {
+  builderStage: Stage
   currentPosition: Position | null
+  currentSegment: LabyrinthSegment | null
+  currentSegmentIndex: number | null
   labyrinthSegments: Array<LabyrinthSegment>
   segmentsAtSelectedPosition: Array<LabyrinthSegment>
   tileSize: number
