@@ -21,6 +21,7 @@ export default class App extends Vue {}
 
 <style lang="scss">
 @import url('./assets/reset.css');
+@import url('../node_modules/mini.css/dist/mini-default.min.css');
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

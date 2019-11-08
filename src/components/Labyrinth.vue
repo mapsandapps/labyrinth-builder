@@ -6,7 +6,8 @@
     xmlns="http://www.w3.org/2000/svg" version="1.1">
     <path
       v-for="segment in labyrinthSegments"
-      v-bind:key="segment.x + segment.y + segment.z"
+      :class="segment.path"
+      :key="segment.path"
       :d="segment.path"
       fill="none"
       stroke="green"

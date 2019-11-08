@@ -1,5 +1,5 @@
 <template>
-<div id="builder-next-segment">
+<div id="builder-controls">
   <div v-if="!segmentSelected">
     Click a point on the left to begin.
   </div>
@@ -40,4 +40,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#builder-controls {
+  max-width: 400px;
+  width: 400px;
+}
 </style>

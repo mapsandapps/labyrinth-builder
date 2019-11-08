@@ -5,18 +5,18 @@
     xmlns="http://www.w3.org/2000/svg" version="1.1">
     <circle
       v-if="!awaitingSelection"
-      :cx="currentPosition.x * tileSize"
-      :cy="currentPosition.y * tileSize"
+      :cx="(currentPosition.x - 1) * tileSize"
+      :cy="(currentPosition.y - 1) * tileSize"
       r="8"
       fill="blue" />
     <g
-      v-for="y in columns - 1"
+      v-for="y in columns + 1"
       v-bind:key="'row-' + y">
       <circle
-        v-for="x in columns - 1"
+        v-for="x in columns + 1"
         v-bind:key="'column' + x"
-        :cx="x * tileSize"
-        :cy="y * tileSize"
+        :cx="(x - 1) * tileSize"
+        :cy="(y - 1) * tileSize"
         :r="pointRadius"
         :fill="getPointFill(x, y)"
         @click="selectPoint(x, y)" />

@@ -24,7 +24,7 @@ const state: StoreState = {
       x: 12,
       y: 5,
       z: 0,
-      path: 'a 64,64 0 0,1 64,64'
+      path: 'a 64,64 0 0,0 64,64'
     },
     {
       x: 12,
@@ -55,13 +55,18 @@ export default new Vuex.Store({
           x: s.x,
           y: s.y,
           z: s.z,
-          path: `M ${state.tileSize * (s.x - 1)},${state.tileSize * (s.y - 1)}` + ' ' + s.path + ' '
+          path: `M ${state.tileSize * (s.x - 1)},${state.tileSize * (s.y - 1)}` + ' ' + s.path
         }
       })
     }
   },
   mutations: {
+    createLabyrinthSegment(state, payload) {
+      // NOTE: position is actually state.currentPosition, so it could just come from here instead of a param
+      state.labyrinthSegments.push({ ...payload.position, path: payload.path })
+    },
     setCurrentPosition(state, payload) {
+      console.log(payload)
       state.currentPosition = payload
     }
   },
