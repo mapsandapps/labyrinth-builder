@@ -109,7 +109,7 @@
               id="next-segment--rotation-cw"
               type="radio"
               name="rotation"
-              value="cw" />
+              value="CW" />
           </div>
         </div>
         <div class="row">
@@ -122,7 +122,7 @@
               id="next-segment--type-ccw"
               type="radio"
               name="rotation"
-              value="ccw" />
+              value="CCW" />
           </div>
         </div>
       </fieldset>
@@ -155,7 +155,7 @@
 
 <script>
 import store from '../store';
-import { buildCurve, buildLine } from '../utils'
+import { buildCurve, buildLine, validateSegment } from '../utils'
 
 export default {
   name: 'BuilderNextSegment',
@@ -168,7 +168,7 @@ export default {
       direction: null,
       height: 0,
       radius: 1,
-      rotation: 'cw',
+      rotation: 'CW',
       type: null,
       width: 0
     };
@@ -211,22 +211,7 @@ export default {
       }
     },
     valid() {
-      if (this.type === 'curve' && this.radius > 0) {
-        if (this.direction === 'up-right' || this.direction === 'up-left' || this.direction === 'down-right' || this.direction === 'down-left') {
-          if (this.rotation === 'cw' || this.rotation === 'ccw') {
-            return true
-          }
-        }
-      } else if (this.type === 'line' && (this.width > 0 && this.height > 0)) { // angled line
-        if (this.direction === 'up-left' || this.direction === 'up-right' || this.direction === 'down-left' || this.direction === 'down-right') {
-          return true
-        }
-      } else if (this.type === 'line' && (this.width > 0 || this.height > 0)) { // vertical or horizontal line
-        if (this.direction === 'up' || this.direction === 'down' || this.direction === 'left' || this.direction === 'right') {
-          return true
-        }
-      }
-      return false
+      return validateSegment(this.type, this.direction, this.height, this.radius, this.rotation, this.width)
     }
   },
   methods: {

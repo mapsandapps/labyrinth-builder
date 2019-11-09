@@ -1,3 +1,4 @@
+import { map } from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { Stage, StoreState } from './types'
@@ -9,41 +10,50 @@ const state: StoreState = {
   currentPosition: null,
   currentSegment: null,
   currentSegmentIndex: null,
+  // labyrinthSegments: [
+  //   {
+  //     x: 3,
+  //     y: 15,
+  //     z: 0,
+  //     path: 'l 128,0'
+  //   },
+  //   {
+  //     x: 12,
+  //     y: 4,
+  //     z: 0,
+  //     path: 'a 128,128 0 0,1 128,128'
+  //   },
+  //   {
+  //     x: 12,
+  //     y: 5,
+  //     z: 0,
+  //     path: 'a 64,64 0 0,0 64,64'
+  //   },
+  //   {
+  //     x: 12,
+  //     y: 15,
+  //     z: 0,
+  //     path: 'a 64,64 0 0,1 64,64'
+  //   },
+  //   {
+  //     x: 1,
+  //     y: 1,
+  //     z: 0,
+  //     path: 'a 64,64 0 0,1 64,64'
+  //   }
+  // ],
   labyrinthSegments: [
     {
-      x: 3,
-      y: 15,
+      x: 5,
+      y: 7,
       z: 0,
-      path: 'l 128,0'
-    },
-    {
-      x: 12,
-      y: 4,
-      z: 0,
-      path: 'a 128,128 0 0,1 128,128'
-    },
-    {
-      x: 12,
-      y: 5,
-      z: 0,
-      path: 'a 64,64 0 0,0 64,64'
-    },
-    {
-      x: 12,
-      y: 15,
-      z: 0,
-      path: 'a 64,64 0 0,1 64,64'
-    },
-    {
-      x: 1,
-      y: 1,
-      z: 0,
-      path: 'a 64,64 0 0,1 64,64'
+      path: 'a 64,64 0 0,1 64,-64 a 64,64 0 0,1 64,64 a 64,64 0 0,0 64,64 a 64,64 0 0,0 64,-64 a 64,64 0 0,0 -64,-64 a 64,64 0 0,1 -64,-64 a 128,128 0 0,1 128,-128 a 128,128 0 0,1 128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 64,64 0 0,0 64,64 a 128,128 0 0,0 128,-128 l 0,-128 a 128,128 0 0,0 -128,-128 l -128,0 a 128,128 0 0,0 -128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 192,192 0 0,0 192,192 a 128,128 0 0,1 128,128'
     }
   ],
   segmentsAtSelectedPosition: [],
   tileSize: 64
 }
+
 
 export default new Vuex.Store({
   state,

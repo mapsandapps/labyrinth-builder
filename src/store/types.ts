@@ -10,6 +10,11 @@ export type Position = {
   y: number
 }
 
+export enum Rotation {
+  CCW = "CCW",
+  CW = "CW"
+}
+
 export enum Stage {
   Starting = "STARTING",
   Adding = "ADDING",
