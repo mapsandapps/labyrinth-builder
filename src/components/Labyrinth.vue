@@ -31,14 +31,6 @@ import store from '../store';
 
 export default {
   name: 'Labyrinth',
-  components: {
-  },
-  props: {
-  },
-  data() {
-    return {
-    };
-  },
   computed: {
     ...mapGetters({
       currentSegment: 'getCurrentSegment',
@@ -52,8 +44,6 @@ export default {
         index
       })
     }
-  },
-  mounted() {
   }
 };
 </script>

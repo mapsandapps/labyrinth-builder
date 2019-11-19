@@ -210,6 +210,9 @@ export default {
         ]
       }
     },
+    tileSize() {
+      return store.state.TILE_SIZE
+    },
     valid() {
       return validateSegment(this.type, this.direction, this.height, this.radius, this.rotation, this.width)
     }
@@ -221,17 +224,11 @@ export default {
     },
     placeSegment: function() {
       if (this.type === 'curve') {
-        let path = buildCurve(this.direction, this.radius, this.rotation)
-        store.commit('createLabyrinthSegment', {
-          path,
-          position: this.currentPosition
-        })
+        let segment = buildCurve(this.currentPosition, this.direction, this.radius, this.rotation)
+        store.commit('createLabyrinthSegment', segment)
       } else if (this.type === 'line') {
-        let path = buildLine(this.direction, this.height, this.width)
-        store.commit('createLabyrinthSegment', {
-          path,
-          position: this.currentPosition
-        })
+        let segment = buildLine(this.currentPosition, this.direction, this.height, this.width)
+        store.commit('createLabyrinthSegment', segment)
       }
     },
     undo: function() {

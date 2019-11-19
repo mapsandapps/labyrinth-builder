@@ -11,7 +11,14 @@
   <div v-if="builderStage === 'STARTING'">
     <button @click="setStage('ADDING')">Add segments</button>
     <button @click="setStage('EDITING')">Edit segments</button>
+    <br />
+    <button @click="setStage('PREVIEWING')">Preview</button>
   </div>
+  <button
+    v-if="builderStage === 'PREVIEWING'"
+    @click="setStage('STARTING')">
+    Stop previewing
+  </button>
 </div>
 </template>
 
@@ -25,12 +32,6 @@ export default {
   components: {
     BuilderEditSegment,
     BuilderNextSegment
-  },
-  props: {
-  },
-  data() {
-    return {
-    };
   },
   computed: {
     builderStage() {
@@ -47,8 +48,6 @@ export default {
     setStage(stage) {
       store.commit('setBuilderStage', stage)
     }
-  },
-  mounted() {
   }
 };
 </script>

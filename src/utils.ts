@@ -1,12 +1,13 @@
 import store from './store'
-import { Rotation } from './store/types'
+import { LabyrinthSegment, Position, Rotation } from './store/types'
 
 export function buildCurve(
+  position: Position,
   direction: string,
   radius: number,
   rotation: Rotation
-): string | undefined {
-  let tileSize = store.state.tileSize
+): LabyrinthSegment {
+  let tileSize = store.state.TILE_SIZE
   let size = tileSize * radius
 
   let pathRotation = rotation === Rotation.CW ? 1 : 0
@@ -17,15 +18,21 @@ export function buildCurve(
   let relativeEndX = relativeSignX * size
   let relativeEndY = relativeSignY * size
 
-  return `a ${size},${size} 0 0,${pathRotation} ${relativeEndX},${relativeEndY}`
+  return {
+    ...position,
+    x1: position.x + relativeEndX,
+    y1: position.y + relativeEndY,
+    path: `a ${size},${size} 0 0,${pathRotation} ${relativeEndX},${relativeEndY}`
+  }
 }
 
 export function buildLine(
+  position: Position,
   direction: string,
   height: number = 0,
   width: number = 0
-): string | undefined {
-  let tileSize = store.state.tileSize
+): LabyrinthSegment {
+  let tileSize = store.state.TILE_SIZE
 
   let relativeSignX = direction === 'left' || direction === 'up-left' || direction === 'down-left' ? -1 : 1
   let relativeSignY = direction === 'up' || direction === 'up-left' || direction === 'up-right' ? -1 : 1
@@ -33,7 +40,12 @@ export function buildLine(
   let relativeEndX = relativeSignX * width * tileSize
   let relativeEndY = relativeSignY * height * tileSize
 
-  return `l ${relativeEndX},${relativeEndY}`
+  return {
+    ...position,
+    x1: position.x + relativeEndX,
+    y1: position.y + relativeEndY,
+    path: `l ${relativeEndX},${relativeEndY}`
+  }
 }
 
 export function validateSegment(
@@ -61,5 +73,13 @@ export function validateSegment(
       return true
     }
   }
+  return false
+}
+
+export function consolidateSegments(
+  segments: LabyrinthSegment[]
+): boolean {
+  console.log(segments)
+
   return false
 }

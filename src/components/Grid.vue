@@ -1,22 +1,22 @@
 <template>
 <div class="grid">
   <svg
-    width="500px" height="500px" viewBox="0 0 960 960"
+    width="500px" height="500px" :viewBox="`0 0 ${width} ${height}`"
     xmlns="http://www.w3.org/2000/svg" version="1.1">
     <circle
       v-if="!awaitingSelection"
-      :cx="(currentPosition.x - 1) * tileSize"
-      :cy="(currentPosition.y - 1) * tileSize"
+      :cx="currentPosition.x"
+      :cy="currentPosition.y"
       r="8"
       fill="blue" />
     <g
-      v-for="y in columns + 1"
+      v-for="y in grid.ys"
       v-bind:key="'row-' + y">
       <circle
-        v-for="x in columns + 1"
+        v-for="x in grid.xs"
         v-bind:key="'column' + x"
-        :cx="(x - 1) * tileSize"
-        :cy="(y - 1) * tileSize"
+        :cx="x"
+        :cy="y"
         :r="pointRadius"
         :fill="getPointFill(x, y)"
         @click="selectPoint(x, y)" />
@@ -27,19 +27,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import store from '../store';
+import store from '../store'
 
 export default {
   name: 'Grid',
-  components: {
-  },
-  props: {
-  },
-  data() {
-    return {
-      columns: 15 // TODO: store in the store
-    };
-  },
   computed: {
     awaitingSelection() {
       return !Boolean(this.currentPosition)
@@ -47,11 +38,20 @@ export default {
     currentPosition() {
       return store.getters.currentPosition
     },
+    grid() {
+      return store.getters.grid
+    },
     pointRadius() {
       return this.awaitingSelection ? 12 : 5
     },
     tileSize() {
-      return store.state.tileSize
+      return store.state.TILE_SIZE
+    },
+    width() {
+      return store.state.WIDTH
+    },
+    height() {
+      return store.state.HEIGHT
     }
   },
   methods: {
@@ -67,7 +67,8 @@ export default {
     selectPoint: function(column, row) {
       let position = {
         x: column,
-        y: row
+        y: row,
+        z: 0
       }
       store.commit('setCurrentPosition', position)
     }

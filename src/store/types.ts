@@ -1,6 +1,8 @@
 export type LabyrinthSegment = {
   x: number
+  x1: number
   y: number
+  y1: number
   z: number
   path: string
 }
@@ -8,6 +10,7 @@ export type LabyrinthSegment = {
 export type Position = {
   x: number
   y: number
+  z: number
 }
 
 export enum Rotation {
@@ -18,7 +21,8 @@ export enum Rotation {
 export enum Stage {
   Starting = "STARTING",
   Adding = "ADDING",
-  Editing = "EDITING"
+  Editing = "EDITING",
+  Previewing = "PREVIEWING"
 }
 
 export type StoreState = {
@@ -26,7 +30,9 @@ export type StoreState = {
   currentPosition: Position | null
   currentSegment: LabyrinthSegment | null
   currentSegmentIndex: number | null
-  labyrinthSegments: Array<LabyrinthSegment>
-  segmentsAtSelectedPosition: Array<LabyrinthSegment>
-  tileSize: number
+  labyrinthSegments: LabyrinthSegment[]
+  segmentsAtSelectedPosition: LabyrinthSegment[]
+  TILE_SIZE: number
+  WIDTH: number
+  HEIGHT: number
 }
