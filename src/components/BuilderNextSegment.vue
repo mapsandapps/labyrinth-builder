@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import store from '../store';
+import store from '../store'
 import { buildCurve, buildLine, validateSegment } from '../utils'
 
 export default {

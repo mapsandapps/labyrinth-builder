@@ -11,6 +11,7 @@ const state: StoreState = {
   currentPosition: null,
   currentSegment: null,
   currentSegmentIndex: null,
+  error: null,
   labyrinthSegments: [
     // {
     //   x: 320,
@@ -19,22 +20,28 @@ const state: StoreState = {
     //   path: 'a 64,64 0 0,1 64,-64 a 64,64 0 0,1 64,64 a 64,64 0 0,0 64,64 a 64,64 0 0,0 64,-64 a 64,64 0 0,0 -64,-64 a 64,64 0 0,1 -64,-64 a 128,128 0 0,1 128,-128 a 128,128 0 0,1 128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 64,64 0 0,0 64,64 a 128,128 0 0,0 128,-128 l 0,-128 a 128,128 0 0,0 -128,-128 l -128,0 a 128,128 0 0,0 -128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 192,192 0 0,0 192,192 a 128,128 0 0,1 128,128'
     // },
     { x: 320, x1: 448,
-      y: 768, y1: 0, z: 0,
+      y: 768, y1: 768,
+      z: 0, z1: 0,
       path: "l 128,0" },
     { x: 128, x1: 128,
-      y: 512, y1: 448, z: 0,
+      y: 512, y1: 448,
+      z: 0, z1: 0,
       path: "l 0,-64" },
     { x: 512, x1: 576,
-      y: 768, y1: 704, z: 0,
+      y: 768, y1: 704,
+      z: 0, z1: 0,
       path: "a 64,64 0 0,0 64,-64" },
     { x: 512, x1: 448,
-      y: 768, y1: 768, z: 0,
+      y: 768, y1: 768,
+      z: 0, z1: 0,
       path: "l -64,0" },
     { x: 128, x1: 320,
-      y: 512, y1: 704, z: 0,
+      y: 512, y1: 704,
+      z: 0, z1: 0,
       path: "a 192,192 0 0,0 192,192" },
     { x: 320, x1: 320,
-      y: 704, y1: 768, z: 0,
+      y: 704, y1: 768,
+      z: 0, z1: 0,
       path: "l 0,64" }
   ],
   segmentsAtSelectedPosition: [],
@@ -72,6 +79,9 @@ export default new Vuex.Store({
     },
     getCurrentSegment: state => {
       return state.currentSegment
+    },
+    getError: state => {
+      return state.error
     }
   },
   mutations: {
@@ -89,6 +99,7 @@ export default new Vuex.Store({
       state.labyrinthSegments.pop()
     },
     setBuilderStage(state, payload) {
+      state.error = null
       state.builderStage = payload
       if (payload === 'PREVIEWING') {
         consolidateSegments(state.labyrinthSegments)
@@ -101,6 +112,9 @@ export default new Vuex.Store({
       state.currentSegment = payload.segment
       state.currentSegmentIndex = payload.index
       state.builderStage = Stage.Editing
+    },
+    setError(state, payload) {
+      state.error = payload
     },
     unsetCurrentSegment(state) {
       state.currentSegment = null

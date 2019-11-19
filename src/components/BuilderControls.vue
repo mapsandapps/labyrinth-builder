@@ -8,6 +8,7 @@
   </div>
   <BuilderEditSegment v-if="builderStage === 'EDITING'" />
   <BuilderNextSegment v-if="pointSelected" />
+  <BuilderPreviewLabyrinth v-if="builderStage === 'PREVIEWING'" />
   <div v-if="builderStage === 'STARTING'">
     <button @click="setStage('ADDING')">Add segments</button>
     <button @click="setStage('EDITING')">Edit segments</button>
@@ -26,12 +27,14 @@
 import store from '../store';
 import BuilderEditSegment from '@/components/BuilderEditSegment.vue'
 import BuilderNextSegment from '@/components/BuilderNextSegment.vue'
+import BuilderPreviewLabyrinth from '@/components/BuilderPreviewLabyrinth.vue'
 
 export default {
   name: 'BuilderControls',
   components: {
     BuilderEditSegment,
-    BuilderNextSegment
+    BuilderNextSegment,
+    BuilderPreviewLabyrinth
   },
   computed: {
     builderStage() {

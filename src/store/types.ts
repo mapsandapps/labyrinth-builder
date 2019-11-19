@@ -4,6 +4,7 @@ export type LabyrinthSegment = {
   y: number
   y1: number
   z: number
+  z1: number
   path: string
 }
 
@@ -30,6 +31,7 @@ export type StoreState = {
   currentPosition: Position | null
   currentSegment: LabyrinthSegment | null
   currentSegmentIndex: number | null
+  error: string | null
   labyrinthSegments: LabyrinthSegment[]
   segmentsAtSelectedPosition: LabyrinthSegment[]
   TILE_SIZE: number
