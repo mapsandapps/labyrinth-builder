@@ -26,6 +26,10 @@ export enum Stage {
   Previewing = "PREVIEWING"
 }
 
+export type PreviewState = {
+  segmentsToConsolidate: LabyrinthSegment[]
+}
+
 export type StoreState = {
   builderStage: Stage
   currentPosition: Position | null

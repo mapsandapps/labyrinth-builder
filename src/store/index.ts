@@ -1,7 +1,7 @@
 import { range } from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { consolidateSegments } from '../utils'
+import { consolidateSegments } from '../preview-utils'
 import { Stage, StoreState } from './types'
 
 Vue.use(Vuex)
