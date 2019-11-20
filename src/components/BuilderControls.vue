@@ -17,7 +17,7 @@
   </div>
   <button
     v-if="builderStage === 'PREVIEWING'"
-    @click="setStage('STARTING')">
+    @click="stopPreviewing">
     Stop previewing
   </button>
 </div>
@@ -50,6 +50,10 @@ export default {
   methods: {
     setStage(stage) {
       store.commit('setBuilderStage', stage)
+    },
+    stopPreviewing() {
+      this.setStage('STARTING')
+      store.commit('setLabyrinthPath', null)
     }
   }
 };

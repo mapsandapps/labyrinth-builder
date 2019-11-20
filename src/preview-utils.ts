@@ -1,4 +1,4 @@
-import { cloneDeep, countBy, findKey } from 'lodash'
+import { cloneDeep, countBy, findKey, last } from 'lodash'
 import store from './store'
 import { LabyrinthSegment, Position, PreviewState } from './store/types'
 // TODO: edge cases:
@@ -6,6 +6,7 @@ import { LabyrinthSegment, Position, PreviewState } from './store/types'
 // * loop (i.e. no clear start or end point)
 
 let previewState: PreviewState = {
+  consolidatedSegments: [],
   segmentsToConsolidate: []
 }
 
@@ -52,11 +53,58 @@ function findStartingPoint( // technically could be used to find any point with 
   return { x: Number(x), y: Number(y), z: Number(z) }
 }
 
+function reverseCurve(
+  path: string
+): string {
+  let pathBits = path.split(' ')
+  let [xChange, yChange] = pathBits[4].split(',')
+
+  return `a ${pathBits[1]} ${pathBits[2]} ${pathBits[3]} ${Number(xChange) * -1},${Number(yChange) * -1}`
+}
+
+function reverseLine(
+  path: string
+): string {
+  let [xChange, yChange] = path.split(' ')[1].split(',')
+
+  return `l ${Number(xChange) * -1},${Number(yChange) * -1}`
+}
+
 function reverseSegment(
-  index: number
+  segment: LabyrinthSegment
+): LabyrinthSegment {
+  let reversedSegment = {
+    x: segment.x1,
+    y: segment.y1,
+    z: segment.z1,
+    x1: segment.x,
+    y1: segment.y,
+    z1: segment.z,
+    path: ''
+  }
+
+  if (segment.path.split(' ')[0] === 'a') {
+    reversedSegment.path = reverseCurve(segment.path)
+  } else if (segment.path.split(' ')[0] === 'l') {
+    reversedSegment.path = reverseLine(segment.path)
+  }
+
+  return reversedSegment
+}
+
+function consolidateSegment(
+  index: number,
+  reverse: Boolean = false
 ): void {
-  let segments = previewState.segmentsToConsolidate
-  // 2 TODO
+  const segments = previewState.segmentsToConsolidate
+  let segment = cloneDeep(segments[index])
+
+  if (reverse) {
+    segment = reverseSegment(segment)
+  }
+
+  previewState.consolidatedSegments.push(segment)
+  previewState.segmentsToConsolidate.splice(index, 1)
 }
 
 function findSegmentWithPoint(
@@ -64,25 +112,42 @@ function findSegmentWithPoint(
 ): number | null {
   let segments = previewState.segmentsToConsolidate
   segments.forEach((segment, index) => {
-    console.log(segment)
     if (segment.x === point.x && segment.y === point.y && segment.z === point.z) {
-      console.log(index)
+      consolidateSegment(index, false)
       return index
     }
     if (segment.x1 === point.x && segment.y1 === point.y && segment.z1 === point.z) {
-      console.log(index)
-      reverseSegment(index)
+      consolidateSegment(index, true)
       return index
     }
   })
   return null
 }
 
+function createPathFromSegments(): string {
+  const segments = previewState.consolidatedSegments
+  const firstSegment = segments[0]
+  let path = `M ${firstSegment.x},${firstSegment.y}`
+  segments.forEach(segment => {
+    path += ` ${segment.path}`
+  })
+
+  return path
+}
+
+function reset() {
+  previewState.consolidatedSegments = []
+  previewState.segmentsToConsolidate = []
+  store.commit('setError', null)
+  store.commit('setLabyrinthPath', null)
+  store.commit('setSuccess', null)
+}
+
 export function consolidateSegments(
   segments: LabyrinthSegment[]
-): boolean {
+): void {
+  reset()
   previewState.segmentsToConsolidate = cloneDeep(segments)
-  console.log(segments)
   // list all the points and how frequently they occur
   // start with one of the points that only occurs once
   // get the other point for that segment
@@ -90,18 +155,40 @@ export function consolidateSegments(
   // mark which ones need to be reversed
 
   const pointFrequencies = getPointFrequencies()
-  console.log(pointFrequencies)
   if (!pointFrequencies) {
     store.commit('setError', 'something wrong with pointFrequencies')
-    return false
+    return
   }
   const startingPoint = findStartingPoint(pointFrequencies)
   if (!startingPoint) {
     store.commit('setError', 'something wrong with startingPoint')
-    return false
+    return
   }
   findSegmentWithPoint(startingPoint)
-  // TODO: 3 remove the segment found from segmentsToConsolidate; push it to the new consolidatedSegments, which should also live in the store
 
-  return true
+  // while there are still segments in segmentsToConsolidate,
+  // findSegmentWithPoint(endPointOfLastConsolidatedSegment)
+
+  let loops = 1
+  while (previewState.segmentsToConsolidate.length > 0) {
+    if (loops % 20 === 0) {
+      console.warn(`executed ${loops} loops`)
+    }
+    if (loops % 500 === 0) {
+      store.commit('setError', `Executed ${loops} loops. You probably want to refresh the page at this point.`)
+    }
+    let lastSegment = last(previewState.consolidatedSegments)
+    if (lastSegment) {
+      findSegmentWithPoint({
+        x: lastSegment.x1,
+        y: lastSegment.y1,
+        z: lastSegment.z1
+      })
+    }
+    loops++
+  }
+
+  const labyrinthPath = createPathFromSegments()
+  store.commit('setLabyrinthPath', labyrinthPath)
+  store.commit('setSuccess', labyrinthPath)
 }

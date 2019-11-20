@@ -13,12 +13,21 @@
       stroke="red"
       stroke-width="16" />
     <path
+      v-if="labyrinthPath"
+      class="labyrinth-path"
+      key="path"
+      :d="labyrinthPath"
+      fill="none"
+      stroke="green"
+      stroke-width="10" />
+    <path
+      v-else
       v-for="(segment, index) in labyrinthSegments"
       :class="segment.path"
       :key="segment.path"
       :d="segment.path"
       fill="none"
-      stroke="green"
+      stroke="orange"
       stroke-width="10"
       @click="selectSegment(segment, index)" />
   </svg>
@@ -34,6 +43,7 @@ export default {
   computed: {
     ...mapGetters({
       currentSegment: 'getCurrentSegment',
+      labyrinthPath: 'getLabyrinthPath',
       labyrinthSegments: 'getAllSegments'
     })
   },

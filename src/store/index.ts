@@ -12,13 +12,8 @@ const state: StoreState = {
   currentSegment: null,
   currentSegmentIndex: null,
   error: null,
+  labyrinthPath: null,
   labyrinthSegments: [
-    // {
-    //   x: 320,
-    //   y: 448,
-    //   z: 0,
-    //   path: 'a 64,64 0 0,1 64,-64 a 64,64 0 0,1 64,64 a 64,64 0 0,0 64,64 a 64,64 0 0,0 64,-64 a 64,64 0 0,0 -64,-64 a 64,64 0 0,1 -64,-64 a 128,128 0 0,1 128,-128 a 128,128 0 0,1 128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 64,64 0 0,0 64,64 a 128,128 0 0,0 128,-128 l 0,-128 a 128,128 0 0,0 -128,-128 l -128,0 a 128,128 0 0,0 -128,128 a 64,64 0 0,1 -64,64 a 64,64 0 0,0 -64,64 a 192,192 0 0,0 192,192 a 128,128 0 0,1 128,128'
-    // },
     { x: 320, x1: 448,
       y: 768, y1: 768,
       z: 0, z1: 0,
@@ -45,6 +40,7 @@ const state: StoreState = {
       path: "l 0,64" }
   ],
   segmentsAtSelectedPosition: [],
+  success: null,
   TILE_SIZE: 64,
   WIDTH: 960,
   HEIGHT: 960
@@ -62,6 +58,9 @@ export default new Vuex.Store({
     },
     currentPosition: state => {
       return state.currentPosition
+    },
+    getLabyrinthPath: state => {
+      return state.labyrinthPath
     },
     grid: state => {
       return {
@@ -82,6 +81,9 @@ export default new Vuex.Store({
     },
     getError: state => {
       return state.error
+    },
+    getSuccess: state => {
+      return state.success
     }
   },
   mutations: {
@@ -115,6 +117,12 @@ export default new Vuex.Store({
     },
     setError(state, payload) {
       state.error = payload
+    },
+    setLabyrinthPath(state, payload) {
+      state.labyrinthPath = payload
+    },
+    setSuccess(state, payload) {
+      state.success = payload
     },
     unsetCurrentSegment(state) {
       state.currentSegment = null

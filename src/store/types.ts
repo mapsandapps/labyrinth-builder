@@ -27,6 +27,7 @@ export enum Stage {
 }
 
 export type PreviewState = {
+  consolidatedSegments: LabyrinthSegment[]
   segmentsToConsolidate: LabyrinthSegment[]
 }
 
@@ -36,8 +37,10 @@ export type StoreState = {
   currentSegment: LabyrinthSegment | null
   currentSegmentIndex: number | null
   error: string | null
+  labyrinthPath: string | null
   labyrinthSegments: LabyrinthSegment[]
   segmentsAtSelectedPosition: LabyrinthSegment[]
+  success: string | null
   TILE_SIZE: number
   WIDTH: number
   HEIGHT: number

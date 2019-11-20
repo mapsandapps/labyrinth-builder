@@ -1,6 +1,14 @@
 <template>
 <div>
   <mark
+    v-if="success"
+    class="tertiary">
+    Success!</mark>
+  <pre
+    class="path-string">
+    {{ success }}
+  </pre>
+  <mark
     v-if="error"
     class="secondary">
     Error:</mark>
@@ -9,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import store from '../store'
 
 export default {
@@ -22,9 +31,10 @@ export default {
     };
   },
   computed: {
-    error() {
-      return store.getters.getError
-    }
+    ...mapGetters({
+      error: 'getError',
+      success: 'getSuccess'
+    })
   },
   methods: {
   },
@@ -34,4 +44,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.path-string {
+  white-space: normal;
+  line-height: 1.3em;
+}
 </style>
