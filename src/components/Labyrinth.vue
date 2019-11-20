@@ -18,8 +18,8 @@
       key="path"
       :d="labyrinthPath"
       fill="none"
-      stroke="green"
-      stroke-width="10" />
+      stroke="#308732"
+      stroke-width="20" />
     <path
       v-else
       v-for="(segment, index) in labyrinthSegments"

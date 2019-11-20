@@ -59,7 +59,9 @@ function reverseCurve(
   let pathBits = path.split(' ')
   let [xChange, yChange] = pathBits[4].split(',')
 
-  return `a ${pathBits[1]} ${pathBits[2]} ${pathBits[3]} ${Number(xChange) * -1},${Number(yChange) * -1}`
+  let newRotation = pathBits[3] === '0,1' ? '0,0' : '0,1'
+
+  return `a ${pathBits[1]} ${pathBits[2]} ${newRotation} ${Number(xChange) * -1},${Number(yChange) * -1}`
 }
 
 function reverseLine(
