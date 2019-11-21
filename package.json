@@ -17,6 +17,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.1.1",
     "@percy/cypress": "^2.2.0",
     "@types/lodash": "^4.14.144",
     "@vue/cli-plugin-e2e-cypress": "^4.0.0",
@@ -24,7 +25,9 @@
     "@vue/cli-service": "^4.0.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
     "typescript": "~3.5.3",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.2"
   }
 }

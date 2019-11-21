@@ -10,11 +10,26 @@
 
 let percyHealthCheck = require('@percy/cypress/task')
 
+const wp = require('@cypress/webpack-preprocessor')
+
 module.exports = (on, config) => {
-  // on('file:preprocessor', webpack({
-  //  webpackOptions: require('@vue/cli-service/webpack.config'),
-  //  watchOptions: {}
-  // }))
+  const options = {
+    webpackOptions: {
+      resolve: {
+        extensions: [".ts", ".tsx", ".js"]
+      },
+      module: {
+        rules: [
+          {
+            test: /\.tsx?$/,
+            loader: "ts-loader",
+            options: { transpileOnly: true }
+          }
+        ]
+      }
+    },
+  }
+  on('file:preprocessor', wp(options))
 
   on("task", percyHealthCheck);
 
