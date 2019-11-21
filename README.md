@@ -15,11 +15,6 @@ yarn run serve
 yarn run build
 ```
 
-### Run your tests
-```
-yarn run test
-```
-
 ### Lints and fixes files
 ```
 yarn run lint
@@ -28,6 +23,11 @@ yarn run lint
 ### Run your end-to-end tests
 ```
 yarn run test:e2e
+```
+
+or with Percy
+```
+percy exec -- yarn run test:e2e
 ```
 
 ### Customize configuration

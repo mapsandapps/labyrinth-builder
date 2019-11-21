@@ -12,6 +12,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
+      "@percy/cypress",
+      "cypress",
       "webpack-env"
     ],
     "paths": {
