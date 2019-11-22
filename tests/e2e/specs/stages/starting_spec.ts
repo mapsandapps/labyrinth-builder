@@ -1,8 +1,11 @@
 /// <reference types="Cypress" />
 
 describe('The "STARTING" stage', () => {
-  it('displays the stage name', () => {
+  beforeEach(() => {
     cy.visit('/')
+  })
+
+  it('displays the stage name', () => {
     cy.contains('#builder-canvas', 'STARTING')
   })
 

@@ -1,5 +1,4 @@
-const types = require('../../../../../src/store/types')
-const utils = require('../../../../../src/utils')
+import { types, utils } from './imports'
 
 const buildCurve = utils.buildCurve
 

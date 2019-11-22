@@ -1,19 +1,16 @@
 <template>
 <div id="builder-controls">
-  <div v-if="builderStage === 'ADDING'">
-    Click a point on the left to add a new segment.
-  </div>
   <div v-if="builderStage === 'EDITING'">
     Click a segment on the left to edit it.
   </div>
   <BuilderEditSegment v-if="builderStage === 'EDITING'" />
-  <BuilderNextSegment v-if="pointSelected" />
+  <BuilderNextSegment v-if="builderStage === 'ADDING'" />
   <BuilderPreviewLabyrinth v-if="builderStage === 'PREVIEWING'" />
   <div v-if="builderStage === 'STARTING'">
-    <button @click="setStage('ADDING')">Add segments</button>
-    <button @click="setStage('EDITING')">Edit segments</button>
+    <button data-cy="adding-button" @click="setStage('ADDING')">Add segments</button>
+    <button data-cy="editing-button" @click="setStage('EDITING')">Edit segments</button>
     <br />
-    <button @click="setStage('PREVIEWING')">Preview</button>
+    <button data-cy="previewing-button" @click="setStage('PREVIEWING')">Preview</button>
   </div>
   <button
     v-if="builderStage === 'PREVIEWING'"
@@ -39,9 +36,6 @@ export default {
   computed: {
     builderStage() {
       return store.getters.builderStage
-    },
-    pointSelected() {
-      return Boolean(store.getters.currentPosition)
     },
     segmentSelected() {
       return Boolean(store.getters.currentSegment)

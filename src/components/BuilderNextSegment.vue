@@ -2,7 +2,8 @@
 <div class="builder-next-segment">
   <div>
     <h2>Add/edit segment</h2>
-    <form>
+    <p>Click a point on the left to add a new segment.</p>
+    <form v-if="currentPosition">
       <fieldset>
         <legend>Type</legend>
         <div class="row">
@@ -130,6 +131,7 @@
         v-if="valid"
         class="tertiary"
         type="button"
+        data-cy="place-segment-button"
         @click="placeSegment">
         Place segment
       </button>
@@ -156,6 +158,7 @@
 <script>
 import store from '../store'
 import { buildCurve, buildLine, validateSegment } from '../utils'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'BuilderNextSegment',
@@ -174,9 +177,10 @@ export default {
     };
   },
   computed: {
-    currentPosition() {
-      return store.getters.currentPosition
-    },
+    ...mapGetters({
+      currentPosition: 'currentPosition',
+      pointSelected: 'pointSelected'
+    }),
     directionOptions() {
       if (!this.type) {
         return null
