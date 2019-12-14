@@ -2,6 +2,7 @@
   <div id="app">
     <BuilderCanvas msg="Welcome to Your Vue.js + TypeScript App"/>
     <BuilderControls />
+    <ZIndexFilters />
   </div>
 </template>
 
@@ -9,11 +10,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BuilderCanvas from './components/BuilderCanvas.vue';
 import BuilderControls from './components/BuilderControls.vue';
+import ZIndexFilters from './components/ZIndexFilters.vue';
 
 @Component({
   components: {
     BuilderCanvas,
-    BuilderControls
+    BuilderControls,
+    ZIndexFilters
   },
 })
 export default class App extends Vue {}

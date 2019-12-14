@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import store from '../store';
+import store from '../store'
 import Grid from '@/components/Grid.vue'
 import Labyrinth from '@/components/Labyrinth.vue'
 

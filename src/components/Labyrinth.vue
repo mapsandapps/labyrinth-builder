@@ -20,16 +20,21 @@
       fill="none"
       stroke="#308732"
       stroke-width="20" />
-    <path
+    <g
       v-else
-      v-for="(segment, index) in labyrinthSegments"
-      :class="segment.path"
-      :key="segment.path"
-      :d="segment.path"
-      fill="none"
-      stroke="orange"
-      stroke-width="10"
-      @click="selectSegment(segment, index)" />
+      v-for="zLevel in segmentsStackedByZIndex"
+      :key="zLevel.zIndex">
+      <path
+        v-for="segment in zLevel.segments"
+        :class="segment.path"
+        :key="segment.path"
+        :d="segment.path"
+        fill="none"
+        stroke="orange"
+        :stroke-opacity="zLevel.active ? 1 : 0.5"
+        stroke-width="10"
+        @click="selectSegment(segment, index)"  />
+    </g>
   </svg>
 </div>
 </template>
@@ -44,10 +49,13 @@ export default {
     ...mapGetters({
       currentSegment: 'getCurrentSegment',
       labyrinthPath: 'getLabyrinthPath',
-      labyrinthSegments: 'getAllSegments'
+      segmentsStackedByZIndex: 'getSegmentsStackedByZIndex'
     })
   },
   methods: {
+    isSegmentActive(segment) {
+      return store.commit('isSegmentActive', segment)
+    },
     selectSegment: function(segment, index) {
       store.commit('setCurrentSegment', {
         segment,

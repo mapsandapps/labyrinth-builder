@@ -31,6 +31,11 @@ export type PreviewState = {
   segmentsToConsolidate: LabyrinthSegment[]
 }
 
+export type ZLevel = {
+  zIndex: number
+  active: boolean
+}
+
 export type StoreState = {
   builderStage: Stage
   currentPosition: Position | null
@@ -41,6 +46,7 @@ export type StoreState = {
   labyrinthSegments: LabyrinthSegment[]
   segmentsAtSelectedPosition: LabyrinthSegment[]
   success: string | null
+  zLevels: ZLevel[]
   TILE_SIZE: number
   WIDTH: number
   HEIGHT: number

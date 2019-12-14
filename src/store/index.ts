@@ -1,4 +1,4 @@
-import { range } from 'lodash'
+import { filter, find, range } from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { consolidateSegments } from '../preview-utils'
@@ -14,33 +14,43 @@ const state: StoreState = {
   error: null,
   labyrinthPath: null,
   labyrinthSegments: [
-    // { x: 320, x1: 448,
-    //   y: 768, y1: 768,
-    //   z: 0, z1: 0,
-    //   path: "l 128,0" },
-    // { x: 128, x1: 128,
-    //   y: 512, y1: 448,
-    //   z: 0, z1: 0,
-    //   path: "l 0,-64" },
-    // { x: 512, x1: 576,
-    //   y: 768, y1: 704,
-    //   z: 0, z1: 0,
-    //   path: "a 64,64 0 0,0 64,-64" },
-    // { x: 512, x1: 448,
-    //   y: 768, y1: 768,
-    //   z: 0, z1: 0,
-    //   path: "l -64,0" },
-    // { x: 128, x1: 320,
-    //   y: 512, y1: 704,
-    //   z: 0, z1: 0,
-    //   path: "a 192,192 0 0,0 192,192" },
-    // { x: 320, x1: 320,
-    //   y: 704, y1: 768,
-    //   z: 0, z1: 0,
-    //   path: "l 0,64" }
+    { x: 320, x1: 448,
+      y: 768, y1: 768,
+      z: 1, z1: 1,
+      path: "l 128,0" },
+    { x: 128, x1: 128,
+      y: 512, y1: 448,
+      z: 1, z1: 1,
+      path: "l 0,-64" },
+    { x: 512, x1: 576,
+      y: 768, y1: 704,
+      z: 2, z1: 1,
+      path: "a 64,64 0 0,0 64,-64" },
+    { x: 512, x1: 448,
+      y: 768, y1: 768,
+      z: 2, z1: 1,
+      path: "l -64,0" },
+    { x: 128, x1: 320,
+      y: 512, y1: 704,
+      z: 1, z1: 1,
+      path: "a 192,192 0 0,0 192,192" },
+    { x: 320, x1: 320,
+      y: 704, y1: 768,
+      z: 1, z1: 1,
+      path: "l 0,64" }
   ],
   segmentsAtSelectedPosition: [],
   success: null,
+  zLevels: [{
+    zIndex: 1,
+    active: true
+  },{
+    zIndex: 2,
+    active: true
+  },{
+    zIndex: 3,
+    active: true
+  }],
   TILE_SIZE: 64,
   WIDTH: 960,
   HEIGHT: 960
@@ -82,8 +92,20 @@ export default new Vuex.Store({
     getError: state => {
       return state.error
     },
+    getSegmentsStackedByZIndex: (state, getters) => {
+      const allSegments = getters.getAllSegments
+      return state.zLevels.map(zLevel => {
+        return {
+          ...zLevel,
+          segments: filter(allSegments, ['z', zLevel.zIndex])
+        }
+      })
+    },
     getSuccess: state => {
       return state.success
+    },
+    zLevels: state => {
+      return state.zLevels
     }
   },
   mutations: {
@@ -96,6 +118,10 @@ export default new Vuex.Store({
         state.currentSegmentIndex = null
         state.currentSegment = null
       }
+    },
+    isSegmentActive(state, payload) {
+      const zLevel = find(state.zLevels, ['zIndex', payload.z])
+      return zLevel ? zLevel.active : false
     },
     removeLastSegment(state) {
       state.labyrinthSegments.pop()
@@ -123,6 +149,12 @@ export default new Vuex.Store({
     },
     setSuccess(state, payload) {
       state.success = payload
+    },
+    toggleZ(state, payload) {
+      const zIndexToToggle = find(state.zLevels, ['zIndex', payload])
+      if (zIndexToToggle) {
+        zIndexToToggle.active = !zIndexToToggle.active
+      }
     },
     unsetCurrentSegment(state) {
       state.currentSegment = null
