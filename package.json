@@ -8,7 +8,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mini.css": "^3.0.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
